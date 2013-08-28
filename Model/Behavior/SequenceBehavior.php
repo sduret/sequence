@@ -121,7 +121,7 @@ class SequenceBehavior extends ModelBehavior {
    *   Default is 0
    * @return void
    */
-  public function setup(&$model, $config = array()) {
+  public function setup(Model $model, $config = array()) {
 
     // If config is a string, assume it's the order field
     if (is_string($config)) {
@@ -160,7 +160,7 @@ class SequenceBehavior extends ModelBehavior {
    * @param array $queryData Original queryData
    * @return array Modified queryData
    */
-  public function beforeFind(&$model, $queryData) {
+  public function beforeFind(Model $model, $queryData) {
 
     // order can can sometimes be not set, or empty, or array(0 => null)
     if (!isset($queryData['order'])
@@ -172,7 +172,7 @@ class SequenceBehavior extends ModelBehavior {
     }
 
     return $queryData;
-    
+
   }
 
   /**
@@ -182,7 +182,7 @@ class SequenceBehavior extends ModelBehavior {
    * @param Model $model Model object that method is triggered on
    * @return boolean Always true otherwise model will not save
    */
-  public function beforeSave(&$model) {
+  public function beforeSave(Model $model) {
 
     $this->_update[$model->alias] = array();
 
@@ -321,7 +321,7 @@ class SequenceBehavior extends ModelBehavior {
    * @param boolean $created Whether the record was created or not
    * @return boolean
    */
-  public function afterSave(&$model, $created) {
+  public function afterSave(Model $model, $created) {
 
     return $this->_updateAll($model);
 
@@ -334,7 +334,7 @@ class SequenceBehavior extends ModelBehavior {
    * @param Model $model Model object that method is triggered on
    * @return boolean Always true
    */
-  public function beforeDelete(&$model) {
+  public function beforeDelete(Model $model, $cascade = true) {
 
     $this->_update[$model->alias] = array();
 
@@ -364,7 +364,7 @@ class SequenceBehavior extends ModelBehavior {
    * @param Model $model Model object that method is triggered on
    * @return boolean
    */
-  public function afterDelete(&$model) {
+  public function afterDelete(Model $model) {
 
     return $this->_updateAll($model);
 
@@ -379,7 +379,7 @@ class SequenceBehavior extends ModelBehavior {
    * @param array $groupValues Array with group field => group values, used for conditions
    * @return integer Value of order field of last record in set
    */
-  protected function _getHighestOrder(&$model, $groupValues = false) {
+  protected function _getHighestOrder(Model $model, $groupValues = false) {
 
     $orderField = $this->settings[$model->alias]['order_field'];
     $escapedOrderField = $this->settings[$model->alias]['escaped_order_field'];
@@ -411,7 +411,7 @@ class SequenceBehavior extends ModelBehavior {
    * @param Model $model Model object that method is triggered on
    * @return void
    */
-  protected function _setOldOrder(&$model) {
+  protected function _setOldOrder(Model $model) {
 
     $this->_oldOrder[$model->alias] = null;
 
@@ -429,7 +429,7 @@ class SequenceBehavior extends ModelBehavior {
    * @param Model $model Model object that method is triggered on
    * @return void
    */
-  protected function _setOldGroups(&$model) {
+  protected function _setOldGroups(Model $model) {
 
     $this->_oldGroups[$model->alias] = null;
 
@@ -454,7 +454,7 @@ class SequenceBehavior extends ModelBehavior {
    * @param Model $model Model object that method is triggered on
    * @return void
    */
-  protected function _setNewOrder(&$model) {
+  protected function _setNewOrder(Model $model) {
 
     $this->_newOrder[$model->alias] = null;
 
@@ -475,7 +475,7 @@ class SequenceBehavior extends ModelBehavior {
    * @param Model $model Model object that method is triggered on
    * @return void
    */
-  protected function _setNewGroups(&$model) {
+  protected function _setNewGroups(Model $model) {
 
     $this->_newGroups[$model->alias] = null;
 
@@ -506,7 +506,7 @@ class SequenceBehavior extends ModelBehavior {
    * @param array $groupValues Array of group field => group value pairs
    * @return array Array of escaped group field => group value pairs
    */
-  protected function _conditionsForGroups(&$model, $groupValues = false) {
+  protected function _conditionsForGroups(Model $model, $groupValues = false) {
 
     $conditions = array();
 
@@ -551,7 +551,7 @@ class SequenceBehavior extends ModelBehavior {
    * @param Model $model Model object that method is triggered on
    * @return array Array Model.primary_key <> => $id
    */
-  protected function _conditionsNotCurrent(&$model) {
+  protected function _conditionsNotCurrent(Model $model) {
 
     return array($model->escapeField($model->primaryKey) . ' <>' => $model->id);
 
@@ -563,7 +563,7 @@ class SequenceBehavior extends ModelBehavior {
    * @param Model $model Model object that method is triggered on
    * @return boolean
    */
-  protected function _updateAll(&$model) {
+  protected function _updateAll(Model $model) {
 
     // If there's no update to do
     if (empty($this->_update[$model->alias])) {
