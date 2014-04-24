@@ -160,7 +160,7 @@ class SequenceBehavior extends ModelBehavior {
    * @param array $queryData Original queryData
    * @return array Modified queryData
    */
-  public function beforeFind(Model $model, $queryData) {
+  public function beforeFind(Model $model, $queryData, $config = array()) {
 
     // order can can sometimes be not set, or empty, or array(0 => null)
     if (!isset($queryData['order'])
@@ -182,7 +182,7 @@ class SequenceBehavior extends ModelBehavior {
    * @param Model $model Model object that method is triggered on
    * @return boolean Always true otherwise model will not save
    */
-  public function beforeSave(Model $model) {
+  public function beforeSave(Model $model, $config = array()) {
 
     $this->_update[$model->alias] = array();
 
@@ -321,7 +321,7 @@ class SequenceBehavior extends ModelBehavior {
    * @param boolean $created Whether the record was created or not
    * @return boolean
    */
-  public function afterSave(Model $model, $created) {
+  public function afterSave(Model $model, $created, $options = array()) {
 
     return $this->_updateAll($model);
 
